@@ -11,11 +11,18 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])
-                ->name('register');
+//AUTENTIFICADOR
+use App\Http\Middleware\Authenticate;
 
-    Route::post('register', [RegisteredUserController::class, 'store']);
+Route::middleware('guest')->group(function () {
+
+    //RUTAS DE REGISTRO  #El sistema no me deja registrar arreglar 
+    Route::get('register', [RegisteredUserController::class, 'create'])
+                ->name('register')->middleware(Authenticate::class);
+
+    Route::post('register', [RegisteredUserController::class, 'store'])->middleware(Authenticate::class);
+    //=============================================================================================
+
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
                 ->name('login');
